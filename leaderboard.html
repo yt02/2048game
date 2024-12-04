@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .leaderboard-container {
+            margin: 50px auto;
+            width: 80%;
+            max-width: 600px;
+            background: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        h1 {
+            color: #333;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        li:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="leaderboard-container">
+        <h1>Leaderboard</h1>
+        <ul id="leaderboard"></ul>
+    </div>
+
+    <script>
+        // Fetch leaderboard data
+        fetch('leaderboard.php')
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    const leaderboard = document.getElementById('leaderboard');
+                    leaderboard.innerHTML = data.data.map((entry, index) => 
+                        `<li>${index + 1}. ${entry.username}: ${entry.score}</li>`).join('');
+                } else {
+                    console.error('Error fetching leaderboard:', data.message);
+                }
+            })
+            .catch(error => console.error('Network error:', error));
+    </script>
+</body>
+</html>
