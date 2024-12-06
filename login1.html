@@ -61,7 +61,25 @@
             box-shadow: 0 0 5px rgba(37, 117, 252, 0.5);
         }
 
-        button {
+        .back-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background-color: #0062ff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+
+
+        #loginBtn {
             width: 100%;
             padding: 10px;
             font-size: 18px;
@@ -74,7 +92,7 @@
             transition: background 0.3s ease;
         }
 
-        button:hover {
+        #loginBtn:hover {
             background: #5e1ed6;
         }
 
@@ -88,6 +106,12 @@
 </head>
 <body>
     <div class="form-container">
+        <button class="back-button" onclick="navigateTo('index.html')" >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" style="vertical-align: middle;">
+                <path d="M15 18l-6-6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Home
+        </button>
         <h2>Login</h2>
         <form id="login-form">
             <label for="username">Username</label>
@@ -96,7 +120,7 @@
             <label for="password">Password</label>
             <input type="password" id="password" name="password" placeholder="Enter your password" required>
 
-            <button type="submit">Login</button>
+            <button type="submit" id="loginBtn">Login</button>
         </form>
         <div id="error-message"></div>
     </div>
@@ -130,6 +154,10 @@
             })
             .catch(error => console.error("Error:", error));
         });
+
+        function navigateTo(page) {
+            window.location.href = page;
+        }
     </script>
 </body>
 </html>

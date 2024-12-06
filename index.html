@@ -6,17 +6,18 @@
     <title>2048 Game Menu</title>
     <link rel="stylesheet" href="frontend/css/index.css"> <!-- External stylesheet -->
 </head>
-<body>
+<body> 
     <div class="background">
         <!-- Background video 
         <video autoplay muted loop class="background-video">
             <source src="background.mp4" type="video/mp4">
             Your browser does not support the video tag.
-        </video>
+        </video>-->
         <audio id="background-music" autoplay loop>
             <source src="background.mp3" type="audio/mp3">
             Your browser does not support the audio element.
-        </audio>-->
+        </audio>
+       
         
         <!-- Background fallback image -->
         <div class="background-image"></div>
@@ -41,8 +42,9 @@
             localStorage.setItem("username", "Guest");
             window.location.href = "game.html"; // Redirect to the game page
         }
-        let audio = document.getElementById('background-music');
-        audio.muted = false;
+        
+        // Select the audio element
+        const backgroundAudio = document.getElementById("background-audio");
 
     </script>
 </body>

@@ -8,10 +8,11 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background-color: #f4f4f4;
+            background: linear-gradient(to bottom right, #f1f1f2, #dceef8);
             margin: 0;
             padding: 0;
         }
+
         .leaderboard-container {
             margin: 50px auto;
             width: 80%;
@@ -21,29 +22,85 @@
             padding: 20px;
             border-radius: 10px;
         }
+
+        .back-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+
         h1 {
             color: #333;
+            margin-bottom: 20px;
         }
-        ul {
-            list-style: none;
-            padding: 0;
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
         }
-        li {
+
+        table th, table td {
+            border: 1px solid #ddd;
             padding: 10px;
-            border-bottom: 1px solid #ddd;
+            text-align: center;
         }
-        li:last-child {
-            border-bottom: none;
+
+        table th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        table tr:hover {
+            background-color: #f1f1f1;
         }
     </style>
 </head>
 <body>
     <div class="leaderboard-container">
+        <button class="back-button" onclick="navigateTo('menu.php')">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" style="vertical-align: middle;">
+                <path d="M15 18l-6-6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Home
+        </button>
         <h1>Leaderboard</h1>
-        <ul id="leaderboard"></ul>
+        <table>
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Username</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody id="leaderboard"></tbody>
+        </table>
     </div>
 
+    <footer>
+        <p>© 2048 Game | All Rights Reserved</p>
+    </footer>
+
     <script>
+        function navigateTo(page) {
+            window.location.href = page;
+        }
+
         // Fetch leaderboard data
         fetch('leaderboard.php')
             .then(response => response.json())
@@ -51,7 +108,11 @@
                 if (data.status === 'success') {
                     const leaderboard = document.getElementById('leaderboard');
                     leaderboard.innerHTML = data.data.map((entry, index) => 
-                        `<li>${index + 1}. ${entry.username}: ${entry.score}</li>`).join('');
+                        `<tr>
+                            <td>${index + 1}</td>
+                            <td>${entry.username}</td>
+                            <td>${entry.score}</td>
+                        </tr>`).join('');
                 } else {
                     console.error('Error fetching leaderboard:', data.message);
                 }

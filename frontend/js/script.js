@@ -42,6 +42,10 @@ function fetchBestScore() {
                 bestScore = data.best_score; // Update the best score variable
                 document.getElementById('best-score').textContent = bestScore; // Display it on the page
                 console.log(`Fetched best score: ${bestScore}`);
+            } else if (data.status === 'guest') {
+                // For guest users, set the best score to 0
+                document.getElementById('best-score').textContent = 0; 
+                console.log("Guest user, best score set to 0.");
             } else {
                 console.error("Unexpected data format when fetching best score:", data);
             }
@@ -50,6 +54,7 @@ function fetchBestScore() {
             console.error('Error fetching best score:', error);
         });
 }
+
 
 // Initialize the board with two random tiles
 function initGame() {
@@ -282,17 +287,36 @@ window.addEventListener("keydown", (e) => {
     }
 });
 
-// Confirmation for going to the menu
 function confirmGoToMenu() {
     const score = parseInt(document.getElementById("score").textContent, 10);
-    if (score > 0) {
-        if (confirm("Are you sure you want to go to the menu? The current score will not be saved.")) {
-            window.location.href = "menu.html";
-        }
-    } else {
-        window.location.href = "index.html";
-    }
+
+    // Fetch the username from the server or frontend
+    fetch('get_username.php')
+        .then(response => response.json())
+        .then(data => {
+            const username = data.username;
+
+            if (score > 0) {
+                if (confirm("Are you sure you want to go to the menu? The current score will not be saved.")) {
+                    if (username === "Guest") {
+                        window.location.href = "index.html";
+                    } else {
+                        window.location.href = "menu.php";
+                    }
+                }
+            } else {
+                if (username === "Guest") {
+                    window.location.href = "index.html";
+                } else {
+                    window.location.href = "menu.php";
+                }
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching username:", error);
+        });
 }
+
 
 // Confirmation for restarting the game
 function confirmRestart() {

@@ -10,6 +10,12 @@ if (!isset($_SESSION['username'])) {
 
 $username = $_SESSION['username'];
 
+// Check if the user is a guest
+if ($username === 'Guest') {
+    echo json_encode(['status' => 'guest', 'best_score' => 0]); // Guest user has a default score of 0
+    exit;
+}
+
 // Database connection
 try {
     // Replace with your actual database credentials
@@ -30,7 +36,8 @@ try {
     if ($result && $result['best_score'] !== null) {
         echo json_encode(['status' => 'success', 'best_score' => (int)$result['best_score']]);
     } else {
-        echo json_encode(['status' => 'error', 'message' => 'No score found for this user']);
+        // If no score is found for the user, return a default score of 0
+        echo json_encode(['status' => 'success', 'best_score' => 0]);
     }
 } catch (PDOException $e) {
     echo json_encode(['status' => 'error', 'message' => 'Query failed: ' . $e->getMessage()]);
