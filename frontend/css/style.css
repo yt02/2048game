@@ -95,12 +95,14 @@ button#restart-btn:hover {
 .tile[data-value="128"] { background: #ff2f2f; }
 .tile[data-value="256"] { background: #f63b7d; } 
 
+
 /* Sidebar styling */
 .sidebar {
     background-color: white;
     box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
     padding: 20px;
     overflow-y: auto;
+    max-width: 200px;
 }
 
 .sidebar h2 {

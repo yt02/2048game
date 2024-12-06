@@ -15,7 +15,8 @@ $username = isset($_SESSION['username']) ? $_SESSION['username'] : "Guest";
     <div id="menu-wrapper">
         <h1>Welcome, <?php echo htmlspecialchars($username); ?>!</h1>
         <div id="menu-container">
-            <button id="start-game-btn">🎮 Start Game</button>
+           <!-- Add a Start Game button -->
+            <button id="start-game-btn" onclick="showModeSelection()">Start Game</button>
             <button onclick="viewLeaderboard()">🏆 Leaderboard</button>
             <button onclick="openSettings()">⚙️ Settings</button>
             <button style="background-color:lightcoral;" onclick="confirmLogout()">Log Out</button>
@@ -23,15 +24,17 @@ $username = isset($_SESSION['username']) ? $_SESSION['username'] : "Guest";
     </div>
 
       <!-- Modal Popup -->
-      <div id="game-mode-modal" class="modal">
+      <div id="mode-selection-modal" class="modal" style="display: none;">
         <div class="modal-content">
-            <h3>Choose Game Mode</h3>
-            <button class="challenge-mode" onclick="startGame('challenge')">1-Minute Challenge Mode</button>
+            <h2>Select Game Mode</h2>
+            <p>Choose a game mode to start playing:</p>
             <button class="normal-mode" onclick="startGame('normal')">Normal Mode</button>
-            <button class="cartoon-mode" onclick="startGame('cartoon')">Normal Mode (Cartoon Tiles)</button>
-            <button class="close-modal" onclick="closeModal()">Cancel</button>
+            <button class="challenge-mode" onclick="startGame('challenge')">1 Minute Challenge</button>
+            <button class="cartoon-mode" onclick="startGame('cartoon')">Cartoon Mode</button>
+            <button onclick="closeModeSelection()">Cancel</button>
         </div>
     </div>
+
 
     <footer>
         <p>© 2048 Game | All Rights Reserved</p>

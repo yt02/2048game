@@ -18,18 +18,20 @@
             
             <button id="restart-btn" onclick="confirmRestart()">⟲</button>
         </div>
+        <div id="status" class="status-bar"></div>
+
 
         <!-- Game Grid -->
         <div id="game-container">
             <div id="grid">
                 <!-- JavaScript will dynamically populate this grid with tiles -->
             </div>
-            <div id="status"></div>
+            <div id="GameStatus"></div>
         </div>
     </div>
    <!-- Sidebar Leaderboard -->
     <div class="sidebar">
-        <h2>Leaderboard</h2>
+        <h2 id="leaderboard-title">Leaderboard</h2> 
         <ul id="leaderboard"></ul>
     </div>
     

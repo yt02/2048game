@@ -4,6 +4,8 @@ let gameOver = false;
 let score = 0; // Current score
 let bestScore = 0; // Best score
 let username = "Guest"; // Default username (Guest)
+let timerExpired = false;
+
 
 // Fetch the username from the server at the start
 function fetchUsername() {
@@ -19,20 +21,31 @@ function fetchUsername() {
 }
 
 // Fetch leaderboard data and display it
+// Fetch and display leaderboard based on the mode
 function fetchLeaderboard() {
-    fetch('leaderboard.php')
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === 'success') {
-            const leaderboard = document.getElementById('leaderboard');
-            leaderboard.innerHTML = data.data.map((entry, index) => 
-                `<li>${index + 1}. ${entry.username}: ${entry.score}</li>`).join('');
-        } else {
-            console.error('Error fetching leaderboard:', data.message);
-        }
-    })
-    .catch(error => console.error('Network error:', error));
+    const mode =getGameMode();
+    fetch(`get_leaderboard.php?mode=${mode}`)
+        .then(response => response.json())
+        .then(data => {
+            const leaderboardElement = document.getElementById("leaderboard");
+            leaderboardElement.innerHTML = ""; // Clear the leaderboard
+
+            data.forEach((entry, index) => {
+                const listItem = document.createElement("li");
+                listItem.textContent = `${index + 1}. ${entry.username}: ${entry.score}`;
+                leaderboardElement.appendChild(listItem);
+            });
+
+            // Update leaderboard title
+            document.getElementById("leaderboard-title").textContent = `${capitalize(mode)} Mode Leaderboard`;
+        })
+        .catch(err => console.error("Error fetching leaderboard:", err));
 }
+
+function capitalize(word) {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+}
+
 
 function fetchBestScore() {
     return fetch('get_best_score.php')
@@ -55,18 +68,88 @@ function fetchBestScore() {
         });
 }
 
+function getGameMode() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('mode') || 'normal'; // Default to 'normal' mode
+}
+
 
 // Initialize the board with two random tiles
 function initGame() {
+    const mode =getGameMode();
     gameOver = false;
     board = Array(gridSize).fill().map(() => Array(gridSize).fill(0));
     score = 0; // Reset score
+
+    if(mode === 'challenge')
+    {
+        startChallengeMode();
+        document.getElementById('status').innerText='Time Left 60s';
+       // currentMode = 'challenge'
+    }else if(mode === 'cartoon'){
+        startCartoonMode();
+        //currentMode = 'cartoon'
+    }else{
+        startNormalMode();
+        document.getElementById('status').innerText='';
+    }
+
     fetchBestScore().then(() => {
         addRandomTile();
         addRandomTile();
         updateBoard();
         fetchLeaderboard();
     });
+}
+
+function startNormalMode(){
+    console.log("Starting Normal Mode...");
+}
+
+
+function startChallengeMode() {
+    console.log("Starting 1-Minute Challenge Mode...");
+    let timer = 30; // 60 seconds
+    const timerInterval = setInterval(() => {
+        timer--;
+        document.getElementById('status').innerText = `Time Left: ${timer}s`;
+
+        if (timer == 0) {
+            console.log("time is up!!");
+            clearInterval(timerInterval);
+            timerExpired = true;
+            isGameOver();
+        }
+        
+    }, 1000);
+}
+
+function startCartoonMode() {
+    console.log("Starting Cartoon Mode...");
+    // Customize grid and animations for cartoon mode
+    document.getElementById('grid').style.backgroundImage = "url('frontend/images/cartoon-background.png')";
+}
+
+// Update score submission to include the mode
+function submitScore(score) {
+    const mode = getGameMode();
+
+    fetch('submit_score.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ mode: mode, score: score })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert("Score submitted successfully!");
+        } else {
+            alert("Failed to submit score.");
+        }
+    })
+    .catch(err => console.error("Error submitting score:", err));
 }
 
 // Update the game board and score display
@@ -88,14 +171,14 @@ function updateBoard() {
     // Display the score
     document.getElementById('score').textContent = score;
     document.getElementById('best-score').textContent = bestScore;
-
     // Check for game over
     if (isGameOver()) {
-        document.getElementById("status").innerText = "Game Over!";
+        document.getElementById("GameStatus").innerText = "Game Over!";
         gameOver = true;
+        console.log("game is over and the time is over");
         gameOverHandler();  // Call the game over handler to save the score
     } else {
-        document.getElementById("status").innerText = " ";
+        document.getElementById("GameStatus").innerText = " ";
     }
 }
 
@@ -244,6 +327,15 @@ function slideDown() {
 }
 
 function isGameOver() {
+    const mode = getGameMode();
+    console.log(timerExpired);
+
+    if(mode === 'challenge' && timerExpired)
+    {
+        showGameOverModal();
+        return true;
+    }
+
     for (let r = 0; r < gridSize; r++) {
         for (let c = 0; c < gridSize; c++) {
             if (board[r][c] === 0) return false;
@@ -296,7 +388,7 @@ function confirmGoToMenu() {
         .then(data => {
             const username = data.username;
 
-            if (score > 0) {
+            if (score > 0 && gameOver===false) {
                 if (confirm("Are you sure you want to go to the menu? The current score will not be saved.")) {
                     if (username === "Guest") {
                         window.location.href = "index.html";
@@ -344,7 +436,9 @@ function gameOverHandler() {
         alert("Please log in to save your score.");
     } else {
         // Save the score and update the leaderboard
-        saveScore(score);
+        //saveScore(score);
+        submitScore(score);
+        timerExpired=false;
     }
     console.log('Game over, saving score:', score);
 

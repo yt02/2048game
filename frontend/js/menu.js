@@ -4,32 +4,30 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("username-display").innerText = username;
 });
 
-const modal = document.getElementById("game-mode-modal");
-        const startGameBtn = document.getElementById("start-game-btn");
+function showModeSelection() {
+    const modal = document.getElementById('mode-selection-modal');
+    modal.style.display = 'flex';
+}
 
-        // Open the modal
-        startGameBtn.addEventListener("click", function () {
-            modal.style.display = "flex";
-        });
+function closeModeSelection() {
+    const modal = document.getElementById('mode-selection-modal');
+    modal.style.display = 'none';
+}
 
-        // Close the modal
-        function closeModal() {
-            modal.style.display = "none";
-        }
 
-        // Start the game based on selected mode
-        function startGame(mode) {
-            closeModal();
+// Start the game based on selected mode
+function startGame(mode) {
+    closeModeSelection();
 
-            // Redirect based on game mode
-            if (mode === "challenge") {
-                window.location.href = "game.php?mode=challenge";
-            } else if (mode === "normal") {
-                window.location.href = "game.html";
-            } else if (mode === "cartoon") {
-                window.location.href = "game.php?mode=cartoon";
-            }
-        }
+    // Redirect based on game mode
+    if (mode === "challenge") {
+        window.location.href = "game.html?mode=challenge";
+    } else if (mode === "normal") {
+        window.location.href = "game.html";
+    } else if (mode === "cartoon") {
+        window.location.href = "game.html?mode=cartoon";
+    }
+}
 
 function viewLeaderboard() {
     window.location.href = "leaderboard.html"; // Create leaderboard.html later
