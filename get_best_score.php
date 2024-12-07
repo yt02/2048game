@@ -16,6 +16,22 @@ if ($username === 'Guest') {
     exit;
 }
 
+// Get the mode parameter from the request
+$mode = $_GET['mode'] ?? 'normal'; // Default to 'normal' mode if not provided
+
+// Determine the leaderboard table based on mode
+$table = '';
+if ($mode === 'normal') {
+    $table = 'leaderboard';
+} elseif ($mode === 'challenge') {
+    $table = 'challenge_leaderboard';
+} elseif ($mode === 'cartoon') {
+    $table = 'cartoon_leaderboard';
+} else {
+    echo json_encode(['status' => 'error', 'message' => 'Invalid game mode']);
+    exit;
+}
+
 // Database connection
 try {
     // Replace with your actual database credentials
@@ -26,10 +42,9 @@ try {
     exit;
 }
 
-// Query to get the best score for the user from the leaderboard table
+// Query to get the best score for the user from the selected leaderboard table
 try {
-    // Query to fetch the highest score for the current user
-    $query = $db->prepare("SELECT MAX(score) AS best_score FROM leaderboard WHERE username = ?");
+    $query = $db->prepare("SELECT MAX(score) AS best_score FROM $table WHERE username = ?");
     $query->execute([$username]);
     $result = $query->fetch(PDO::FETCH_ASSOC);
 
@@ -42,3 +57,4 @@ try {
 } catch (PDOException $e) {
     echo json_encode(['status' => 'error', 'message' => 'Query failed: ' . $e->getMessage()]);
 }
+?>

@@ -49,13 +49,14 @@ function capitalize(word) {
 
 
 function fetchBestScore() {
-    return fetch('get_best_score.php')
+    const mode = getGameMode();
+    return fetch(`get_best_score.php?mode=${mode}`)
         .then(response => response.json())
         .then(data => {
             if (data.status === 'success' && typeof data.best_score === 'number') {
                 bestScore = data.best_score; // Update the best score variable
                 document.getElementById('best-score').textContent = bestScore; // Display it on the page
-                console.log(`Fetched best score: ${bestScore}`);
+                console.log(`Fetched best score for ${mode} mode: ${bestScore}`);
             } else if (data.status === 'guest') {
                 // For guest users, set the best score to 0
                 document.getElementById('best-score').textContent = 0; 
