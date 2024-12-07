@@ -126,6 +126,7 @@ function startChallengeMode() {
 
 function startCartoonMode() {
     console.log("Starting Cartoon Mode...");
+    toggleCartoonAgenda();
     // Customize grid and animations for cartoon mode
     document.getElementById('grid').style.backgroundImage = "url('frontend/images/cartoon-background.png')";
 }
@@ -231,6 +232,53 @@ function getCartoonImage(value) {
     return images[value] || "images/default_cartoon.png";
 }
 
+function populateCartoonAgenda() {
+    const agendaContainer = document.getElementById("agenda-container");
+    agendaContainer.innerHTML = ""; // Clear previous content
+
+    const images = {
+        2: "images/cartoon_2.png",
+        4: "images/cartoon_4.png",
+        8: "images/cartoon_8.png",
+        16: "images/cartoon_16.png",
+        32: "images/cartoon_32.png",
+        64: "images/cartoon_64.png",
+        128: "images/cartoon_128.png",
+        256: "images/cartoon_256.png",
+        512: "images/cartoon_512.png",
+        1024: "images/cartoon_1024.png",
+        2048: "images/cartoon_2048.png"
+    };
+
+    for (const [value, imagePath] of Object.entries(images)) {
+        const agendaItem = document.createElement("div");
+        agendaItem.classList.add("agenda-item");
+
+        const img = document.createElement("img");
+        img.src = imagePath;
+        img.alt = `Tile ${value}`;
+
+        const label = document.createElement("span");
+        label.textContent = value;
+
+        agendaItem.appendChild(img);
+        agendaItem.appendChild(label);
+
+        agendaContainer.appendChild(agendaItem);
+    }
+}
+
+function toggleCartoonAgenda() {
+    const mode = getGameMode();
+    const agenda = document.getElementById("cartoon-agenda");
+
+    if (mode === "cartoon") {
+        agenda.style.display = "block"; // Show the agenda for cartoon mode
+        populateCartoonAgenda(); // Populate the agenda
+    } else {
+        agenda.style.display = "none"; // Hide the agenda for other modes
+    }
+}
 
 // Add a random tile (2 or 4) to an empty spot
 function addRandomTile() {
