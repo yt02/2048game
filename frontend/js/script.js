@@ -5,6 +5,7 @@ let score = 0; // Current score
 let bestScore = 0; // Best score
 let username = "Guest"; // Default username (Guest)
 let timerExpired = false;
+let highestValueReached =2;//initialize the highest value as 2
 
 
 // Fetch the username from the server at the start
@@ -85,10 +86,8 @@ function initGame() {
     {
         startChallengeMode();
         document.getElementById('status').innerText='Time Left 60s';
-       // currentMode = 'challenge'
     }else if(mode === 'cartoon'){
         startCartoonMode();
-        //currentMode = 'cartoon'
     }else{
         startNormalMode();
         document.getElementById('status').innerText='';
@@ -97,6 +96,10 @@ function initGame() {
     fetchBestScore().then(() => {
         addRandomTile();
         addRandomTile();
+        if(mode === 'cartoon')
+        {
+            updateCartoonAgenda();
+        }
         updateBoard();
         fetchLeaderboard();
     });
@@ -110,6 +113,7 @@ function startNormalMode(){
 function startChallengeMode() {
     console.log("Starting 1-Minute Challenge Mode...");
     let timer = 30; // 60 seconds
+
     const timerInterval = setInterval(() => {
         timer--;
         document.getElementById('status').innerText = `Time Left: ${timer}s`;
@@ -127,6 +131,7 @@ function startChallengeMode() {
 function startCartoonMode() {
     console.log("Starting Cartoon Mode...");
     toggleCartoonAgenda();
+    
     // Customize grid and animations for cartoon mode
     document.getElementById('grid').style.backgroundImage = "url('frontend/images/cartoon-background.png')";
 }
@@ -232,6 +237,47 @@ function getCartoonImage(value) {
     return images[value] || "images/default_cartoon.png";
 }
 
+function updateCartoonAgenda() {
+    const agendaContainer = document.getElementById("agenda-container");
+    agendaContainer.innerHTML = ""; // Clear previous content
+
+    const images = {
+        2: "images/cartoon_2.png",
+        4: "images/cartoon_4.png",
+        8: "images/cartoon_8.png",
+        16: "images/cartoon_16.png",
+        32: "images/cartoon_32.png",
+        64: "images/cartoon_64.png",
+        128: "images/cartoon_128.png",
+        256: "images/cartoon_256.png",
+        512: "images/cartoon_512.png",
+        1024: "images/cartoon_1024.png",
+        2048: "images/cartoon_2048.png"
+    };
+
+    for (const [value, imagePath] of Object.entries(images)) {
+        const agendaItem = document.createElement("div");
+        agendaItem.classList.add("agenda-item");
+
+        const img = document.createElement("img");
+        if (parseInt(value) <= highestValueReached) {
+            img.src = imagePath; // Show the unlocked image
+        } else {
+            img.src = "images/question.png"; // Show the locked placeholder
+        }
+        img.alt = `Tile ${value}`;
+
+        const label = document.createElement("span");
+        label.textContent = value;
+
+        agendaItem.appendChild(img);
+        agendaItem.appendChild(label);
+        agendaContainer.appendChild(agendaItem);
+    }
+}
+
+
+
 function populateCartoonAgenda() {
     const agendaContainer = document.getElementById("agenda-container");
     agendaContainer.innerHTML = ""; // Clear previous content
@@ -256,6 +302,7 @@ function populateCartoonAgenda() {
 
         const img = document.createElement("img");
         img.src = imagePath;
+       
         img.alt = `Tile ${value}`;
 
         const label = document.createElement("span");
@@ -327,14 +374,22 @@ function slide(direction) {
 
 function slideLeft() {
     let moved = false;
+
     for (let r = 0; r < gridSize; r++) {
-        let row = board[r].filter(v => v); // Get non-zero tiles
+        let row = board[r].filter(v => v); // Get non-zero tile
+
 
         //Loop through the row to check for merge
         for (let i = 0; i < row.length - 1; i++) {
             if (row[i] === row[i + 1]) {
-                row[i] *= 2;
+                row[i] *= 2; //Merge tiles and double the value
                 updateScore(row[i]); // Update the score when tiles merge
+
+                if (row[i] > highestValueReached) {
+                    highestValueReached = row[i];
+                    console.log("New highest value reached: " + highestValueReached);
+                }
+
                 row[i + 1] = 0;
                 console.log("Tiles merged, new value: " + row[i]);
             }
@@ -346,6 +401,9 @@ function slideLeft() {
         if (!arraysEqual(board[r], row)) moved = true;
         board[r] = row;
     }
+  
+   updateCartoonAgenda();
+
     return moved;
 }
 
@@ -356,12 +414,21 @@ function arraysEqual(a, b) {
 // Similarly define slideRight(), slideUp(), slideDown() here
 function slideRight() {
     let moved = false;
+
     for (let r = 0; r < gridSize; r++) {
         let row = board[r].filter(v => v); // Get non-zero tiles
+
+
         for (let i = row.length - 1; i > 0; i--) { // Traverse from right to left
             if (row[i] === row[i - 1]) {
                 row[i] *= 2;
                 updateScore(row[i]); // Update the score when tiles merge
+
+                if (row[i] > highestValueReached) {
+                    highestValueReached = row[i];
+                    console.log("New highest value reached: " + highestValueReached);
+                }
+
                 row[i - 1] = 0;
             }
         }
@@ -370,20 +437,30 @@ function slideRight() {
         if (!arraysEqual(board[r], row)) moved = true;
         board[r] = row;
     }
+    updateCartoonAgenda();
     return moved;
 }
 
 function slideUp() {
     let moved = false;
+
     for (let c = 0; c < gridSize; c++) {
         let column = [];
         for (let r = 0; r < gridSize; r++) {
             if (board[r][c] !== 0) column.push(board[r][c]); // Collect non-zero values
         }
+
         for (let i = 0; i < column.length - 1; i++) { // Combine tiles upwards
             if (column[i] === column[i + 1]) {
                 column[i] *= 2;
                 updateScore(column[i]); // Update the score when tiles merge
+
+                if (column[i] > highestValueReached) {
+                    highestValueReached = column[i];
+                    console.log("New highest value reached: " + highestValueReached);
+                }
+
+
                 column[i + 1] = 0;
             }
         }
@@ -396,20 +473,31 @@ function slideUp() {
             board[r][c] = column[r];
         }
     }
+    updateCartoonAgenda();
+    
     return moved;
 }
 
 function slideDown() {
     let moved = false;
+
     for (let c = 0; c < gridSize; c++) {
         let column = [];
         for (let r = 0; r < gridSize; r++) {
             if (board[r][c] !== 0) column.push(board[r][c]); // Collect non-zero values
         }
+
         for (let i = column.length - 1; i > 0; i--) { // Traverse from bottom to top
             if (column[i] === column[i - 1]) {
                 column[i] *= 2;
                 updateScore(column[i]); // Update the score when tiles merge
+
+                if (column[i] > highestValueReached) {
+                    highestValueReached = column[i];
+                    console.log("New highest value reached: " + highestValueReached);
+                }
+
+
                 column[i - 1] = 0;
             }
         }
@@ -422,12 +510,14 @@ function slideDown() {
             board[r][c] = column[r];
         }
     }
+    //updateCartoonAgenda(currentValues);
+    updateCartoonAgenda();
     return moved;
 }
 
 function isGameOver() {
     const mode = getGameMode();
-    console.log(timerExpired);
+    //console.log(timerExpired);
 
     if(mode === 'challenge' && timerExpired)
     {
