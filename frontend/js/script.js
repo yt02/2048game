@@ -133,7 +133,7 @@ function startCartoonMode() {
     toggleCartoonAgenda();
     
     // Customize grid and animations for cartoon mode
-    document.getElementById('grid').style.backgroundImage = "url('frontend/images/cartoon-background.png')";
+   //document.getElementById('grid').style.backgroundImage = "url('images/cartoon-background.png')";
 }
 
 // Update score submission to include the mode
