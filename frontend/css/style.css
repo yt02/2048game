@@ -84,17 +84,14 @@ button#restart-btn:hover {
     justify-content: center;
     align-items: center;
     color: white;
+    font-weight: bold;
+    margin: 5px;
+    border-radius: 8px;
+    background-color: #ccc; /* Fallback for normal mode */
+    background-size: cover; /* Make images cover the tile */
+    background-position: center;
+    background-repeat: no-repeat;
 }
-
-.tile[data-value="2"] { background: #eee4da; }
-.tile[data-value="4"] { background: #ede0c8; }
-.tile[data-value="8"] { background: #f2b179; }
-.tile[data-value="16"] { background: #f59563; }
-.tile[data-value="32"] { background: #f67c5f; }
-.tile[data-value="64"] { background: #f65e3b; }
-.tile[data-value="128"] { background: #ff2f2f; }
-.tile[data-value="256"] { background: #f63b7d; } 
-
 
 /* Sidebar styling */
 .sidebar {
@@ -169,3 +166,29 @@ button#restart-btn:hover {
     cursor: pointer;
 }
 
+#cartoon-agenda {
+    margin: 20px 0;
+    text-align: center;
+}
+
+#agenda-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.agenda-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 14px;
+}
+
+.agenda-item img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}

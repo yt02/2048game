@@ -116,9 +116,9 @@ function startChallengeMode() {
 
         if (timer == 0) {
             console.log("time is up!!");
+            isGameOver();
             clearInterval(timerInterval);
             timerExpired = true;
-            isGameOver();
         }
         
     }, 1000);
@@ -154,15 +154,29 @@ function submitScore(score) {
 
 // Update the game board and score display
 function updateBoard() {
+    const mode = getGameMode();
     const grid = document.getElementById("grid");
     grid.innerHTML = "";
     board.forEach(row => {
         row.forEach(value => {
             const tile = document.createElement("div");
             tile.classList.add("tile");
+
             if (value !== 0) {
                 tile.innerText = value;
-                tile.setAttribute("data-value", value);
+
+                //tile.setAttribute("data-value", value);
+
+                if (mode === 'cartoon') {
+                    // Add cartoon mode styling
+                    tile.innerText = ""; // Clear text to display an image or emoji
+                    tile.style.backgroundImage = `url('${getCartoonImage(value)}')`;
+                    tile.style.backgroundSize = "cover";
+                    
+                } else {
+                    // Default mode: use colors
+                    tile.style.backgroundColor = getTileColor(value);
+                }
             }
             grid.appendChild(tile);
         });
@@ -176,12 +190,46 @@ function updateBoard() {
         document.getElementById("GameStatus").innerText = "Game Over!";
         gameOver = true;
         console.log("game is over and the time is over");
+        //submitScore(score);
         gameOverHandler();  // Call the game over handler to save the score
     } else {
         document.getElementById("GameStatus").innerText = " ";
     }
 }
 
+function getTileColor(value) {
+    const colors = {
+        2: "#eee4da",
+        4: "#ede0c8",
+        8: "#f2b179",
+        16: "#f59563",
+        32: "#f67c5f",
+        64: "#f65e3b",
+        128: "#edcf72",
+        256: "#edcc61",
+        512: "#edc850",
+        1024: "#edc53f",
+        2048: "#edc22e"
+    };
+    return colors[value] || "#ccc";
+}  
+
+function getCartoonImage(value) {
+    const images = {
+        2: "images/cartoon_2.png",
+        4: "images/cartoon_4.png",
+        8: "images/cartoon_8.png",
+        16: "images/cartoon_16.png",
+        32: "images/cartoon_32.png",
+        64: "images/cartoon_64.png",
+        128: "images/cartoon_128.png",
+        256: "images/cartoon_256.png",
+        512: "images/cartoon_512.png",
+        1024: "images/cartoon_1024.png",
+        2048: "images/cartoon_2048.png"
+    };
+    return images[value] || "images/default_cartoon.png";
+}
 
 
 // Add a random tile (2 or 4) to an empty spot
@@ -233,6 +281,8 @@ function slideLeft() {
     let moved = false;
     for (let r = 0; r < gridSize; r++) {
         let row = board[r].filter(v => v); // Get non-zero tiles
+
+        //Loop through the row to check for merge
         for (let i = 0; i < row.length - 1; i++) {
             if (row[i] === row[i + 1]) {
                 row[i] *= 2;
@@ -243,7 +293,8 @@ function slideLeft() {
             
         }
         row = row.filter(v => v); // Remove zeros after combining
-        while (row.length < gridSize) row.push(0);
+        while (row.length < gridSize) row.push(0);//fill the remaining space with zeros
+
         if (!arraysEqual(board[r], row)) moved = true;
         board[r] = row;
     }
@@ -344,6 +395,7 @@ function isGameOver() {
         }
     }
     showGameOverModal();
+    timerExpired = false;
     return true;
     
 }
