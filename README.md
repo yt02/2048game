@@ -13,4 +13,20 @@ CREATE TABLE leaderboard (
     score INT NOT NULL,
     date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-click ok at the below
+
+-- Create table for 1-minute challenge leaderboard
+CREATE TABLE challenge_leaderboard (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255) NOT NULL,
+    score INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create table for cartoon mode leaderboard
+CREATE TABLE cartoon_leaderboard (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255) NOT NULL,
+    score INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+
