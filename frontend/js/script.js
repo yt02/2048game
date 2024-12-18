@@ -635,31 +635,6 @@ function gameOverHandler() {
 
 }
 
-
-// Save score to the database and refresh leaderboard
-function saveScore(score) {
-    // Make sure the fetch request sends score correctly
-    fetch('save_score.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'  // Make sure content type is set correctly
-        },
-        body: `score=${encodeURIComponent(score)}&username=${encodeURIComponent(username)}`
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === 'success') {
-            console.log('Score saved successfully');
-        } else {
-            console.error('Error saving score:', data.message);
-        }
-    })
-    .catch(error => {
-        console.error('Error with fetch request:', error);
-    });
-
-}
-
 // Start the game after fetching user data
 fetchUsername().then(() => {
     initGame();
