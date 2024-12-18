@@ -122,13 +122,16 @@
         <form id="register-form">
             <label for="username">Username</label>
             <input type="text" id="username" name="username" placeholder="Enter your username" required>
-
+        
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+        
             <label for="password">Password</label>
             <input type="password" id="password" placeholder="Password" required>
-
+        
             <label for="confirmPassword">Confirm Password</label>
             <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
-
+        
             <div class="password-tips">
                 Password must be at least 8 characters long and include:
                 <ul>
@@ -138,9 +141,10 @@
                     <li>At least one special character (e.g., !@#$%^&*()_+=-)</li>
                 </ul>
             </div>
-
+        
             <button id="registerButton" type="submit">Register</button>
         </form>
+        
         <div id="error-message"></div>
     </div>
 
@@ -150,12 +154,18 @@
 
             // Get form values
             const username = document.getElementById("username").value;
+            const email = document.getElementById("email").value;
             const password = document.getElementById("password").value;
             const confirmPassword = document.getElementById("confirmPassword").value;
             const errorMessage = document.getElementById("error-message");
-
-            // Regular expression for password validation
+             // Regular expression for password validation
+             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>?/]).{8,}$/;
+
+            if (!emailRegex.test(email)) {
+                errorMessage.textContent = "Invalid email format.";
+                return;
+            }
 
             // Password validation checks
             if (!passwordRegex.test(password)) {
@@ -173,26 +183,26 @@
             errorMessage.textContent = "";
 
             // Prepare data for sending
-            const data = { username: username, password: password };
-            // Send to the backend using fetch
-            fetch("register.php", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(data)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === "success") {
-                    alert("Registration successful! Please login.");
-                    window.location.href = "login1.html"; // Redirect to login page
-                } else {
-                    document.getElementById("error-message").innerText = data.message;
-                }
-            })
-            .catch(error => console.error("Error:", error));
-        });
+                const data = { username: username, email: email, password: password };
+
+    fetch("register.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "success") {
+                alert("Registration successful! Please login.");
+                window.location.href = "login1.html";
+            } else {
+                errorMessage.textContent = data.message;
+            }
+        })
+        .catch(error => console.error("Error:", error));
+});
 
         function navigateTo(page) {
             window.location.href = page;

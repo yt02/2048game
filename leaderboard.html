@@ -44,6 +44,9 @@
             color: #333;
             margin-bottom: 20px;
         }
+        .leaderboard-select { 
+            margin-bottom: 20px;
+        }
 
         table {
             width: 100%;
@@ -80,6 +83,14 @@
             Home
         </button>
         <h1>Leaderboard</h1>
+        <div class="leaderboard-select">
+            <label for="leaderboard-type">Choose leaderboard: </label>
+            <select id="leaderboard-type" onclick = "fetchLeaderboard()">
+                <option value="leaderboard">Normal</option>
+                <option value="challenge_leaderboard">Challenge Mode</option>
+                <option value="cartoon_leaderboard">Cartooon Mode</option>
+            </select>
+        </div>
         <table>
             <thead>
                 <tr>
@@ -102,6 +113,7 @@
         }
 
         // Fetch leaderboard data
+        /*
         fetch('leaderboard.php')
             .then(response => response.json())
             .then(data => {
@@ -118,6 +130,29 @@
                 }
             })
             .catch(error => console.error('Network error:', error));
+            */
+           function fetchLeaderboard(){
+            const leaderboardType = document.getElementById('leaderboard-type').value;
+            fetch(`leaderboard.php?type=${leaderboardType}`)
+                .then(response=> response.json())
+                .then(data=>{
+                    if(data.status === 'success'){
+                        const leaderboard = document.getElementById('leaderboard');
+                        leaderboard.innerHTML = data .data.map((entry,index)=>
+                            `<tr>
+                                <td>${index+1}</td>
+                                <td>${entry.username}</td>
+                                <td>${entry.score}</td>
+                            </tr>`).join('');
+                    }else{
+                        console.error('Error fetching leaderboard: ', data.message);
+                    }
+                })
+                .catch(error=> console.errorr('Network error: ', error));
+                
+           }
+           // Fetch the default leaderboard on page load 
+           document.addEventListener('DOMContentLoaded', fetchLeaderboard);
     </script>
 </body>
 </html>

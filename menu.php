@@ -19,6 +19,7 @@ $username = isset($_SESSION['username']) ? $_SESSION['username'] : "Guest";
             <button id="start-game-btn" onclick="showModeSelection()">Start Game</button>
             <button onclick="viewLeaderboard()">🏆 Leaderboard</button>
             <button onclick="openSettings()">⚙️ Settings</button>
+            <button onclick="openProfile()">🙋‍♀️ Profile 🙋‍♂️</button>
             <button style="background-color:lightcoral;" onclick="confirmLogout()">Log Out</button>
         </div>
     </div>

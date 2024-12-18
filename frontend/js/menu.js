@@ -37,6 +37,10 @@ function openSettings() {
     window.location.href = "settings.html"; // Create settings.html later
 }
 
+function openProfile() {
+    window.location.href = "profile.html"; // Create settings.html later
+}
+
 function navigateTo(page) {
     window.location.href = page;
 }

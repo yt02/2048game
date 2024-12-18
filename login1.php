@@ -36,6 +36,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if (password_verify($pass, $row['password'])) {
             // Login successful
             $_SESSION['username'] = $user;
+
+            
             echo json_encode(['status' => 'success', 'message' => 'Login successful']);
         } else {
             // Invalid password

@@ -151,7 +151,7 @@ function submitScore(score) {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            alert("Score submitted successfully!");
+           // alert("Score submitted successfully!");
         } else {
             alert("Failed to submit score.");
         }
