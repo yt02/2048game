@@ -14,6 +14,13 @@ function closeModeSelection() {
     modal.style.display = 'none';
 }
 
+function hideImage(button) {
+    const imageElement = button.nextElementSibling; // Get the corresponding image
+    clearTimeout(hoverTimer); // Clear the timer if the mouse leaves early
+    imageElement.style.display = 'none'; // Hide the image
+}
+
+
 
 // Start the game based on selected mode
 function startGame(mode) {

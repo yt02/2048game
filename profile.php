@@ -35,162 +35,198 @@ $profile_pic = $profile_pic ?: "images/defaultpic.png";
     <title>Profile</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            background: #f7f9fc;
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
         }
 
         .profile-container {
             width: 100%;
-            max-width: 600px;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            overflow: hidden;
+            max-width: 500px;
+            background:rgba(255, 255, 255, 0.58);
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            padding: 30px;
+            position: relative;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #7f8c8d;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 30px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .back-button:hover {
+            background-color: #2c3e50;
+            transform: scale(1.05);
         }
 
         .profile-header {
-            background: linear-gradient(135deg, #3498db, #8e44ad);
-            color: white;
-            padding: 20px;
             text-align: center;
+            margin-top: 40px;
         }
 
         .profile-header img {
-            width: 120px;
-            height: 120px;
+            width: 150px;
+            height: 150px;
             border-radius: 50%;
-            border: 4px solid white;
-            margin-top: -60px;
             object-fit: cover;
+            margin-bottom: 15px;
+            border: 4px solid #ddd;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .profile-header h1 {
             margin: 10px 0;
             font-size: 24px;
+            color: #333333;
         }
 
         .profile-content {
-            padding: 20px;
+            text-align: left;
+            margin-top: 20px;
         }
 
         .profile-content .field {
             margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
         }
 
         .profile-content .field label {
-            font-size: 16px;
-            font-weight: bold;
-        }
-
-        .profile-content .field span {
-            font-size: 16px;
-            color: #555;
+            display: block;
+            font-size: 14px;
+            color: #555555;
+            margin-bottom: 5px;
         }
 
         .profile-content .field input {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            display: none;
-        }
-
-        .edit-button {
-            background-color: #3498db;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
+            width: 95%;
+            padding: 12px;
             font-size: 14px;
-            transition: background-color 0.3s ease;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+            background: #f9f9f9;
         }
 
-        .edit-button:hover {
-            background-color: #2980b9;
+        .profile-content button:hover{
+            
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transform: scale(1.05);
         }
 
         .save-button {
-            background-color: #2ecc71;
+            background-color: #3498db;
             color: white;
             border: none;
-            padding: 10px;
+            padding: 14px;
             width: 100%;
             border-radius: 5px;
             font-size: 16px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
-            margin-top: 20px;
+            transition: all 0.3s ease;
+            margin-bottom: 10px;
+            font-weight: bold;
         }
 
         .save-button:hover {
-            background-color: #27ae60;
+            background-color: #2980b9;
+            
         }
 
-        .back-button {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background-color: #bdc3c7;
+        .cancel-button {
+            background-color: #e74c3c;
             color: white;
             border: none;
-            padding: 8px 15px;
+            padding: 14px;
+            width: 100%;
             border-radius: 5px;
-            font-size: 14px;
+            font-size: 16px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
-            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            font-weight: bold;
         }
 
-        .back-button:hover {
-            background-color: #7f8c8d;
+        .cancel-button:hover {
+            background-color: #c0392b;
+        }
+
+        .preview-image {
+            display: none;
+            margin: 15px auto;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px dashed #ccc;
         }
     </style>
 </head>
 <body>
     <div class="profile-container">
+        <button class="back-button" onclick="window.location.href='menu.php'">Back</button>
         <div class="profile-header">
-            <img id="profile-pic" src="<?= htmlspecialchars($profile_pic) ?>" alt="Profile Picture">
+            <img id="profile-pic" src="<?= htmlspecialchars($profile_pic) ?>" alt="<?= htmlspecialchars($username) ?>'s Profile Picture">
             <h1><?= htmlspecialchars($username) ?></h1>
         </div>
         <div class="profile-content">
             <form id="profile-form" method="POST" enctype="multipart/form-data">
                 <div class="field">
                     <label for="profile-pic-upload">Profile Picture</label>
-                    <span><button type="button" class="edit-button" onclick="enableEditing('profile-pic-upload')">Change</button></span>
-                    <input type="file" id="profile-pic-upload" name="profile-pic" accept="images/default.png">
+                    <input type="file" id="profile-pic-upload" name="profile-pic" accept="image/*">
+                    <img id="preview-pic" class="preview-image" alt="Preview">
                 </div>
 
                 <div class="field">
                     <label for="username">Username</label>
-                    <span id="username-display"><?= htmlspecialchars($username) ?></span>
-                    <input type="text" id="username" name="username">
-                    <button type="button" class="edit-button" onclick="enableEditing('username')">Edit</button>
+                    <input type="text" id="username" name="username" value="<?= htmlspecialchars($username) ?>" placeholder="Enter your username">
                 </div>
 
                 <div class="field">
                     <label for="email">Email</label>
-                    <span id="email-display"><?= htmlspecialchars($email) ?></span>
-                    <input type="email" id="email" name="email">
-                    <button type="button" class="edit-button" onclick="enableEditing('email')">Edit</button>
+                    <input type="email" id="email" name="email" value="<?= htmlspecialchars($email) ?>" placeholder="Enter your email">
                 </div>
 
                 <button type="submit" class="save-button">Save Changes</button>
+                <button type="button" class="cancel-button" onclick="resetForm()">Cancel</button>
             </form>
         </div>
     </div>
 
     <script>
+        const profilePicInput = document.getElementById('profile-pic-upload');
+        const previewPic = document.getElementById('preview-pic');
+
+        profilePicInput.addEventListener('change', function () {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    previewPic.src = e.target.result;
+                    previewPic.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function resetForm() {
+            document.getElementById('profile-form').reset();
+            previewPic.style.display = 'none';
+            previewPic.src = "";
+        }
+
         document.getElementById('profile-form').addEventListener('submit', function (e) {
             e.preventDefault();
 
@@ -214,11 +250,7 @@ $profile_pic = $profile_pic ?: "images/defaultpic.png";
                 alert('An error occurred while updating the profile.');
             });
         });
-
-        function enableEditing(id) {
-            const input = document.getElementById(id);
-            input.style.display = 'block';
-        }
     </script>
 </body>
 </html>
+

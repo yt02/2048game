@@ -8,8 +8,14 @@
 
 /* Body Styling */
 body {
-    background: linear-gradient(to bottom right, #f1f1f2, #dceef8);
-    color: #0c0c0c;
+    background-image: url("../../images/pinkbackground.png");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+   
+   /* background: linear-gradient(to bottom right, #f1f1f2, #dceef8);
+   */
+   color: #0c0c0c;
     display: flex;
     flex-direction: column;
     justify-content: center; /* Centers the content vertically */
@@ -43,7 +49,7 @@ h1 {
 }
 
 #menu-container button {
-    background: #c3dbe9;
+    background: #d3a4fad5;
     color: #333;
     font-size: 18px;
     padding: 10px 20px;
@@ -54,13 +60,12 @@ h1 {
 }
 
 #menu-container button:hover {
-    background: #99cdd8;
+    background: #ac80e0;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     transform: scale(1.05);
 }
 
 
-/* Modal Styles */
 .modal {
     position: fixed;
     top: 0;
@@ -73,19 +78,42 @@ h1 {
     align-items: center;
     z-index: 1000;
 }
+
 .modal-content {
-    background: white;
+    background: rgba(236, 247, 255, 0.914);
     padding: 20px;
     border-radius: 10px;
     width: 90%;
     max-width: 400px;
     text-align: center;
 }
+
 .modal-content button {
-    margin: 10px;
-    padding: 10px 20px;
+    display: block; /* Ensures buttons are stacked */
+    width: 100%; /* Makes the buttons stretch across the width */
+    margin: 10px 0; /* Adds margin between buttons */
+    padding: 15px;
     font-size: 16px;
     border-radius: 10px;
+    border:0;
+    cursor: pointer; /* Adds pointer cursor */
+    transition: all 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);;
+}
+
+.cancel-button {
+    background-color:lightcoral; /* Red for cancel button */
+   
+}
+
+.normal-mode, .challenge-mode, .cartoon-mode {
+    background-color: #4CAF50; /* Green for the game mode buttons */
+    color: rgb(13, 12, 12);
+}
+
+.normal-mode:hover, .challenge-mode:hover, .cartoon-mode:hover, .cancel-button:hover {
+    transition: all 0.3 ease;
+    box-shadow: 0 4px 6px rgba(205, 202, 202, 0.2);
+    transform: scale(1.05);
 }
 
 
@@ -96,36 +124,67 @@ footer {
     opacity: 0.8;
 }
 
-.modal-content button:hover {
-    opacity: 0.8;
-}
-
 .challenge-mode {
-    background: #2575fc;
+    /*background-image: linear-gradient(144deg,#c176f7, #d042f3 50%,#eb00bc);
+*/
+background-color: #A19AD3;
 }
 
 .normal-mode {
-    background: #28a745;
+    background-color: #A1D6CB;
 }
 
 .cartoon-mode {
-    background: #ffc107;
+    background-color: #FFF574;
     color: #333;
 }
 
 
-.close-modal {
-    display: block;
-    margin: 20px auto 0;
-    padding: 8px 20px;
-    font-size: 14px;
-    color: white;
-    background: #e74c3c;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
 
 .close-modal:hover {
     background: #c0392b;
+}
+
+
+.mode-button {
+    position: relative; /* For positioning the tooltip */
+    display: inline-block;
+    margin: 20px;
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+/* Change button color on hover */
+.mode-button:hover {
+    background-color: #0056b3;
+}
+
+/* Tooltip image */
+.normal-mode .tooltip-image,
+.challenge-mode .tooltip-image,
+.cartoon-mode .tooltip-image {
+    position:absolute;
+    bottom: -80%; /* Position above the button */
+    left: 50%;
+    transform: translateX(100%);
+    display: none; /* Initially hidden */
+    width: 200px; /* Adjust size as needed */
+    height: auto;
+    border: 2px solid #555;
+    border-radius: 10px;
+    z-index: 1;
+    transition: all 0.2 ease-in;
+}
+
+/* Show tooltip image on hover */
+.normal-mode:hover .tooltip-image ,
+.challenge-mode .tooltip-image,
+.cartoon-mode .tooltip-image {
+    display: block;
 }
