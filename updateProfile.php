@@ -13,36 +13,43 @@ $profile_pic = isset($_FILES['profile-pic']) ? $_FILES['profile-pic'] : '';
 //session_start();
 $user_id = $_SESSION['id'];
 
-// Update username
+header('Content-Type: application/json'); // Set the response type to JSON
+$response = ['status' => 'success'];
+
 if ($new_username) {
-    $stmt = $conn->prepare("UPDATE 2048users SET username = ? WHERE id = ?");
+    $stmt = $conn->prepare("UPDATE users SET username = ? WHERE id = ?");
+    $_SESSION['username'] = $new_username;
     $stmt->bind_param("si", $new_username, $user_id);
     $stmt->execute();
     $stmt->close();
+    $response['updated_username'] = $new_username;
 }
 
-// Update email
 if ($new_email) {
     $stmt = $conn->prepare("UPDATE users SET email = ? WHERE id = ?");
     $stmt->bind_param("si", $new_email, $user_id);
     $stmt->execute();
     $stmt->close();
+    $response['updated_email'] = $new_email;
 }
 
-// Update profile picture
 if ($profile_pic && $profile_pic['tmp_name']) {
-    $target_dir = "uploads/";
+    $target_dir = "images/";
     $target_file = $target_dir . basename($profile_pic["name"]);
     move_uploaded_file($profile_pic["tmp_name"], $target_file);
 
-    $stmt = $conn->prepare("UPDATE users SET profile_pic = ? WHERE id = ?");
+    $stmt = $conn->prepare("UPDATE users SET profile_picture = ? WHERE id = ?");
     $stmt->bind_param("si", $target_file, $user_id);
     $stmt->execute();
     $stmt->close();
+    $response['updated_profile_pic'] = $target_file;
 }
 
 $conn->close();
+echo json_encode($response); // Send the JSON response
+exit();
+
 
 // Redirect back to profile page with a success message
-header("Location: profile.html?status=success");
+
 ?>

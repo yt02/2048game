@@ -36,6 +36,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if (password_verify($pass, $row['password'])) {
             // Login successful
             $_SESSION['username'] = $user;
+            $_SESSION['id'] = $row['id'];
+            error_log("Session ID: " . $_SESSION['id']); // Debug: Logs the session id to the error log
+
 
             
             echo json_encode(['status' => 'success', 'message' => 'Login successful']);

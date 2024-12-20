@@ -38,7 +38,7 @@ function openSettings() {
 }
 
 function openProfile() {
-    window.location.href = "profile.html"; // Create settings.html later
+    window.location.href = "profile.php"; // Create settings.html later
 }
 
 function navigateTo(page) {
