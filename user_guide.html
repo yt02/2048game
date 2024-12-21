@@ -6,84 +6,134 @@
     <title>How to Play 2048</title>
     <style>
         /* General Page Styles */
-header {
-    padding: 20px;
-    background-color: #4CAF50;
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+        html, body {
+            height: 100%; /* Ensure the body and html take up the full viewport height */
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom right, #f1f1f2, #dceef8); /* Background gradient */
+            font-family: 'Arial', sans-serif;
+            color: #333;
+            display: flex;
+            flex-direction: column; /* Stack content vertically */
+        }
 
-header .btn {
-    text-decoration: none;
-    padding: 10px 15px;
-    background-color: #008CBA;
-    color: white;
-    border-radius: 5px;
-    font-size: 16px;
-}
+        header {
+            padding: 30px;
+            background-color: #56bae7;
+            color: white;
+            text-align: center;
+        }
 
-header .btn:hover {
-    background-color: #005f7a;
-}
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
 
-main {
-    margin: 20px auto;
-    max-width: 800px;
-    text-align: left;
-}
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1; /* Take up the available space between the header and footer */
+        }
 
-.guide-section {
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
+        .btn {
+            text-decoration: none;
+            padding: 10px 15px;
+            background-color: #3095f9;
+            color: white;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            display: inline-block;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
 
-.guide-section h2 {
-    text-align: center;
-    color: #333;
-}
+        .btn:hover {
+            background-color: #113591;
+            transform: scale(1.05);
+        }
 
-ol, ul {
-    margin: 20px 0;
-    padding-left: 40px;
-}
+        .guide-section {
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
 
-footer {
-    margin-top: 40px;
-    text-align: center;
-    color: #777;
-}
+        .guide-section h2 {
+            color: #2276ff;
+            font-size: 28px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
 
+        ol, ul {
+            text-align: left;
+            margin: 20px 0;
+            padding-left: 40px;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        ol li, ul li {
+            margin-bottom: 10px;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 12px;
+            opacity: 0.8;
+            padding: 10px;
+
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .guide-section {
+                padding: 20px;
+            }
+
+            ol, ul {
+                padding-left: 20px;
+            }
+        }
     </style>
 </head>
 <body>
     <header>
         <h1>How to Play 2048</h1>
-        <a href="menu.php" class="btn">Back to Home</a>
     </header>
 
-    <main>
-        <section class="guide-section">
-            <h2>Game Instructions</h2>
-            <ol>
-                <li>Use the arrow keys (←, ↑, →, ↓) to slide tiles in the desired direction.</li>
-                <li>When two tiles with the same number touch, they merge into one with a combined value.</li>
-                <li>Your goal is to create a tile with the value of <strong>2048</strong>.</li>
-                <li>The game ends when there are no valid moves left.</li>
-            </ol>
-            <h3>Tips:</h3>
-            <ul>
-                <li>Plan your moves ahead to prevent the board from filling up.</li>
-                <li>Focus on building larger numbers in one corner of the board.</li>
-            </ul>
-        </section>
-    </main>
+    <div class="container">
+        <a href="menu.php" class="btn">Back to Home</a>
+        <main>
+            <section class="guide-section">
+                <h2>Game Instructions</h2>
+                <ol>
+                    <li>Use the arrow keys (←, ↑, →, ↓) to slide tiles in the desired direction.</li>
+                    <li>When two tiles with the same number touch, they merge into one with a combined value.</li>
+                    <li>Your goal is to create a tile with the value of <strong>2048</strong>.</li>
+                    <li>The game ends when there are no valid moves left.</li>
+                </ol>
+                <h3>Tips:</h3>
+                <ul>
+                    <li>Plan your moves ahead to prevent the board from filling up.</li>
+                    <li>Focus on building larger numbers in one corner of the board.</li>
+                </ul>
+            </section>
+        </main>
+    </div>
 
     <footer>
-        <p>&copy; 2024 Your Name. All Rights Reserved.</p>
+        <p>&copy; 2048 Game. All Rights Reserved.</p>
     </footer>
 </body>
 </html>
