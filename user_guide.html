@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Play 2048</title>
+    <style>
+        /* General Page Styles */
+header {
+    padding: 20px;
+    background-color: #4CAF50;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header .btn {
+    text-decoration: none;
+    padding: 10px 15px;
+    background-color: #008CBA;
+    color: white;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+header .btn:hover {
+    background-color: #005f7a;
+}
+
+main {
+    margin: 20px auto;
+    max-width: 800px;
+    text-align: left;
+}
+
+.guide-section {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.guide-section h2 {
+    text-align: center;
+    color: #333;
+}
+
+ol, ul {
+    margin: 20px 0;
+    padding-left: 40px;
+}
+
+footer {
+    margin-top: 40px;
+    text-align: center;
+    color: #777;
+}
+
+    </style>
+</head>
+<body>
+    <header>
+        <h1>How to Play 2048</h1>
+        <a href="menu.php" class="btn">Back to Home</a>
+    </header>
+
+    <main>
+        <section class="guide-section">
+            <h2>Game Instructions</h2>
+            <ol>
+                <li>Use the arrow keys (←, ↑, →, ↓) to slide tiles in the desired direction.</li>
+                <li>When two tiles with the same number touch, they merge into one with a combined value.</li>
+                <li>Your goal is to create a tile with the value of <strong>2048</strong>.</li>
+                <li>The game ends when there are no valid moves left.</li>
+            </ol>
+            <h3>Tips:</h3>
+            <ul>
+                <li>Plan your moves ahead to prevent the board from filling up.</li>
+                <li>Focus on building larger numbers in one corner of the board.</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Your Name. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>

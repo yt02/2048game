@@ -18,11 +18,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = $input['email'];
     $pass = $input['password'];
 
+    // Validate email format
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         echo json_encode(['status' => 'error', 'message' => 'Invalid email format']);
         exit;
     }
 
+    // Check for existing username or email
     $stmt = $conn->prepare("SELECT * FROM users WHERE username = ? OR email = ?");
     $stmt->bind_param("ss", $user, $email);
     $stmt->execute();
@@ -31,10 +33,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if ($result->num_rows > 0) {
         echo json_encode(['status' => 'error', 'message' => 'Username or email already exists']);
     } else {
+        // Path to the default profile picture
+        $defaultProfilePicture = 'images/default.png'; // Change this path if needed
         $hashedPassword = password_hash($pass, PASSWORD_DEFAULT);
 
-        $stmt = $conn->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
-        $stmt->bind_param("sss", $user, $email, $hashedPassword);
+        // Insert the new user with default profile picture
+        $stmt = $conn->prepare("INSERT INTO users (username, email, password, profile_picture) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("ssss", $user, $email, $hashedPassword, $defaultProfilePicture);
 
         if ($stmt->execute()) {
             echo json_encode(['status' => 'success', 'message' => 'Registration successful']);

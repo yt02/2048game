@@ -40,8 +40,8 @@ function viewLeaderboard() {
     window.location.href = "leaderboard.html"; // Create leaderboard.html later
 }
 
-function openSettings() {
-    window.location.href = "settings.html"; // Create settings.html later
+function openUserGuide() {
+    window.location.href = "user_guide.html"; // Create settings.html later
 }
 
 function openProfile() {

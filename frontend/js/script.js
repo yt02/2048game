@@ -5,7 +5,8 @@ let score = 0; // Current score
 let bestScore = 0; // Best score
 let username = "Guest"; // Default username (Guest)
 let timerExpired = false;
-let highestValueReached =2;//initialize the highest value as 2
+let highestValueReached =2;//initialize the highest value as 
+let timerInterval;
 
 
 // Fetch the username from the server at the start
@@ -78,27 +79,28 @@ function getGameMode() {
 
 // Initialize the board with two random tiles
 function initGame() {
-    const mode =getGameMode();
+    const mode = getGameMode();
     gameOver = false;
     board = Array(gridSize).fill().map(() => Array(gridSize).fill(0));
     score = 0; // Reset score
+    highestValueReached = 2;
 
-    if(mode === 'challenge')
-    {
+    stopTimer(); // Ensure any running timer is cleared
+
+    if (mode === 'challenge') {
         startChallengeMode();
-        document.getElementById('status').innerText='Time Left 60s';
-    }else if(mode === 'cartoon'){
+        document.getElementById('status').innerText = 'Time Left: 60s';
+    } else if (mode === 'cartoon') {
         startCartoonMode();
-    }else{
+    } else {
         startNormalMode();
-        document.getElementById('status').innerText='';
+        document.getElementById('status').innerText = '';
     }
 
     fetchBestScore().then(() => {
         addRandomTile();
         addRandomTile();
-        if(mode === 'cartoon')
-        {
+        if (mode === 'cartoon') {
             updateCartoonAgenda();
         }
         updateBoard();
@@ -106,28 +108,54 @@ function initGame() {
     });
 }
 
+
 function startNormalMode(){
     console.log("Starting Normal Mode...");
 }
 
 
+// Start Challenge Mode with Timer
 function startChallengeMode() {
     console.log("Starting 1-Minute Challenge Mode...");
-    let timer = 30; // 60 seconds
+    let timer = 60; // 60 seconds
+    timerExpired = false; // Reset timer status
 
-    const timerInterval = setInterval(() => {
+    clearInterval(timerInterval); // Clear any existing timer interval
+
+    timerInterval = setInterval(() => {
         timer--;
         document.getElementById('status').innerText = `Time Left: ${timer}s`;
 
-        if (timer == 0) {
-            console.log("time is up!!");
-            isGameOver();
-            clearInterval(timerInterval);
+        if (timer <= 0) {
+            console.log("Time is up!");
             timerExpired = true;
+            clearInterval(timerInterval);
+            handleGameOver(); // Handle game over due to timer
         }
-        
     }, 1000);
 }
+
+// Stop and Clear Timer
+function stopTimer() {
+    if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null; // Reset timer reference
+        console.log("Timer stopped and cleared.");
+    }
+}
+
+// Game Over Handler
+function handleGameOver() {
+    gameOver = true;
+    stopTimer(); // Ensure timer is stopped
+    document.getElementById("GameStatus").innerText = "Game Over!";
+    // Additional game-over logic
+    submitScore(score);
+    console.log('Game over, saving score:', score);
+    showGameOverModal();
+    
+}
+
 
 function startCartoonMode() {
     console.log("Starting Cartoon Mode...");
@@ -198,7 +226,11 @@ function updateBoard() {
         gameOver = true;
         console.log("game is over and the time is over");
         //submitScore(score);
+        if(mode === 'challenge'){
+            clearInterval(timerInterval);
+        }
         gameOverHandler();  // Call the game over handler to save the score
+        //timerExpired = false;
     } else {
         document.getElementById("GameStatus").innerText = " ";
     }
@@ -534,7 +566,7 @@ function isGameOver() {
         }
     }
     showGameOverModal();
-    timerExpired = false;
+    
     return true;
     
 }
@@ -543,7 +575,7 @@ function showGameOverModal() {
     // Update scores in the modal
     document.getElementById('current-score').textContent = score;
     document.getElementById('modal-best-score').textContent = bestScore;
-
+    timerExpired = false;
     // Display the modal
     const modal = document.getElementById('game-over-modal');
     modal.style.display = 'flex';
@@ -629,7 +661,7 @@ function gameOverHandler() {
         // Save the score and update the leaderboard
         //saveScore(score);
         submitScore(score);
-        timerExpired=false;
+        //timerExpired=false;
     }
     console.log('Game over, saving score:', score);
 

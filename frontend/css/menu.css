@@ -179,12 +179,11 @@ background-color: #A19AD3;
     border: 2px solid #555;
     border-radius: 10px;
     z-index: 1;
-    transition: all 0.2 ease-in;
 }
 
 /* Show tooltip image on hover */
 .normal-mode:hover .tooltip-image ,
-.challenge-mode .tooltip-image,
-.cartoon-mode .tooltip-image {
+.challenge-mode:hover .tooltip-image,
+.cartoon-mode:hover .tooltip-image {
     display: block;
 }
