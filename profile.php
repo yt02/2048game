@@ -49,7 +49,7 @@ $profile_pic = $profile_pic ?: "images/defaultpic.png";
             width: 100%;
             max-width: 500px;
             background:rgba(255, 255, 255, 0.58);
-            border-radius: 10px;
+            border-radius: 15px;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
             padding: 30px;
             position: relative;
@@ -59,11 +59,11 @@ $profile_pic = $profile_pic ?: "images/defaultpic.png";
             position: absolute;
             top: 20px;
             left: 20px;
-            background-color: #7f8c8d;
+            background-color:rgb(70, 103, 252);
             color: white;
             border: none;
-            padding: 10px 15px;
-            border-radius: 30px;
+            padding: 10px 20px;
+            border-radius: 5px;
             font-size: 14px;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -77,7 +77,7 @@ $profile_pic = $profile_pic ?: "images/defaultpic.png";
 
         .profile-header {
             text-align: center;
-            margin-top: 40px;
+            margin-top: 20px;
         }
 
         .profile-header img {
