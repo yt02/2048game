@@ -4,7 +4,7 @@ include("db.php");
 
 // Check if the user is logged in
 if (!isset($_SESSION['username'])) {
-    header("Location: login.php"); // Redirect to login if not logged in
+    header("Location: login1.html"); // Redirect to login if not logged in
     exit();
 }
 
@@ -172,6 +172,25 @@ $profile_pic = $profile_pic ?: "images/defaultpic.png";
             object-fit: cover;
             border: 2px dashed #ccc;
         }
+
+        .delete-button {
+            background-color: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 14px;
+            width: 100%;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .delete-button:hover {
+            background-color: #ff4c4c;
+        }
+
     </style>
 </head>
 <body>
@@ -201,6 +220,8 @@ $profile_pic = $profile_pic ?: "images/defaultpic.png";
 
                 <button type="submit" class="save-button">Save Changes</button>
                 <button type="button" class="cancel-button" onclick="resetForm()">Cancel</button>
+                <button type="button" class="delete-button" onclick="deleteAccount()">Delete Account</button>
+
             </form>
         </div>
     </div>
@@ -250,6 +271,32 @@ $profile_pic = $profile_pic ?: "images/defaultpic.png";
                 alert('An error occurred while updating the profile.');
             });
         });
+
+        function deleteAccount() {
+    if (confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
+        fetch('deleteAccount.php', {
+            method: 'POST',
+            body: JSON.stringify({ user_id: <?= json_encode($user_id) ?> }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                alert('Account deleted successfully!');
+                window.location.href = 'login1.html'; // Redirect to login page
+            } else {
+                alert('Error deleting account: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while deleting the account.');
+        });
+    }
+}
+
     </script>
 </body>
 </html>
